@@ -3,5 +3,10 @@ app:
     type:     annotation
 
 app_hello_world:
-    path: /hello/world
-    defaults: { _controller: 'AppBundle:Default:hello' }
+    path: /hello/{name}
+    defaults:
+        _controller: 'AppBundle:Default:hello'
+        name: world
+    requirements:
+        name: '[a-z]+'
+    methods: [GET]
