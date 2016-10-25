@@ -2,6 +2,7 @@
 
 namespace AppBundle\Controller;
 
+use AppBundle\Birthday\WeekDaysCalendar;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Method;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
@@ -76,26 +77,14 @@ class DefaultController extends Controller
     public function birthdayAction($month, $day)
     {
         
-        $weekDays = [];
-        $current = (int)date('Y');
-        $last = $current + 10;
-        
-        for ($year = $current; $year <= $last; $year++) {
-            
-            $date = checkdate($month, $day, $year);
-            // If date doesn't exist
-            if (!$date) {
-                throw $this->createNotFoundException('Dat ain\'t no birfday');
-            }
-            $weekDays[$year] = date('l', mktime(0, 0, 0, $month, $day, $year));
-        }
+        $calendar = new WeekDaysCalendar();
         
         return $this->render(
           'birthday.html.twig',
           [
             'month' => $month,
             'day' => $day,
-            'week_days' => $weekDays,
+            'week_days' => $calendar->getCalendar($month, $day)
           ]
         );
         
