@@ -1,0 +1,14 @@
+
+
+
+{# String Interpolation #}
+{% set the_date = "#{'now'|date('Y')}-#{month}-#{day}" %}
+<p>
+  Birthdays for {{ the_date|date('F j') }}<sup>{{ the_date|date('S') }}</sup>
+</p>
+
+{% for year, week_day in week_days %}
+  {{ year }}: {{ week_day }}<br />
+
+{% endfor %}
+

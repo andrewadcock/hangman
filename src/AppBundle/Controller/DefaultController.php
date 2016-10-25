@@ -76,7 +76,7 @@ class DefaultController extends Controller
     public function birthdayAction($month, $day)
     {
         
-        $content = '';
+        $weekDays = [];
         $current = (int)date('Y');
         $last = $current + 10;
         
@@ -84,13 +84,20 @@ class DefaultController extends Controller
             
             $date = checkdate($month, $day, $year);
             // If date doesn't exist
-            if(!$date) {
+            if (!$date) {
                 throw $this->createNotFoundException('Dat ain\'t no birfday');
             }
-            $content .= sprintf('%s: %s<br>', $year, date('l', mktime(0, 0, 0, $month, $day, $year)));
+            $weekDays[$year] = date('l', mktime(0, 0, 0, $month, $day, $year));
         }
         
-        return new Response($content);
+        return $this->render(
+          'birthday.html.twig',
+          [
+            'month' => $month,
+            'day' => $day,
+            'week_days' => $weekDays,
+          ]
+        );
         
     }
 }
