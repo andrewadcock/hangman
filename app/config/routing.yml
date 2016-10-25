@@ -1,0 +1,7 @@
+app:
+    resource: "@AppBundle/Controller/"
+    type:     annotation
+
+app_hello_world:
+    path: /hello/world
+    defaults: { _controller: 'AppBundle:Default:hello' }
