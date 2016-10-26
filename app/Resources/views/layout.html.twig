@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+  <title>{% block title 'Hangman' %}</title>
+  <link rel="stylesheet" type="text/css" href="{{ asset('css/style.css') }}" />
+  <link rel="shortcut icon" href="{{ asset('/favicon.ico') }}" />
+  {% block stylesheets %}{% endblock %}
+</head>
+<body>
+<div id="wrapper">
+  <div id="header">
+    <div id="logo">
+      <h1>
+        <a href="{{ path('app_login') }}">Hangman</a>
+      </h1>
+    </div>
+    <div id="menu">
+      <ul>
+        <li class="first current_page_item">
+          <a href="{{ path('app_game_play') }}">
+            {{- 'menu.game'|trans -}}
+          </a>
+        </li>
+        <li>
+          <a href="{{ path('app_signup') }}">{{- 'menu.signup'|trans -}}</a>
+        </li>
+        <li>
+          <a href="{{ path('app_login') }}">{{- 'menu.login'|trans -}}</a>
+        </li>
+        <li>
+          <a href="{{ path('app_contact') }}">{{- 'menu.contact'|trans -}}</a>
+        </li>
+      </ul>
+      <br class="clearfix" />
+    </div>
+  </div>
+
+  <div id="page">
+    <div id="content">
+      <h2>
+        {% block subtitle %}
+          {{  block('title') }}
+        {% endblock %}
+      </h2>
+      {% block content %}{% endblock %}
+    </div>
+    <div id="sidebar">
+     {{ render(controller('AppBundle:Game:listMostRecent')) }}
+     {{ render(controller('AppBundle:User:listMostRecent')) }}
+    <br class="clearfix" />
+  </div>
+</div>
+{% block javascripts %}{% endblock %}
+</body>
+</html>

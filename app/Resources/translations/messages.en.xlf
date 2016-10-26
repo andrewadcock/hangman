@@ -1,0 +1,34 @@
+<?xml version="1.0" encoding="utf-8"?>
+<xliff xmlns="urn:oasis:names:tc:xliff:document:1.2" version="1.2">
+  <file source-language="en" target-language="en" datatype="plaintext" original="file.ext">
+    <header>
+      <tool tool-id="symfony" tool-name="Symfony"/>
+    </header>
+    <body>
+      <trans-unit id="de8416862d565b02c389848f54767a64" resname="menu.game">
+        <source>menu.game</source>
+        <target>Game</target>
+      </trans-unit>
+      <trans-unit id="433158fd0cbcc200da8a7466a393ce3a" resname="menu.signup">
+        <source>menu.signup</source>
+        <target>Register</target>
+      </trans-unit>
+      <trans-unit id="d7782189f7f2519f2ddc969f3a4ade94" resname="menu.login">
+        <source>menu.login</source>
+        <target>Login</target>
+      </trans-unit>
+      <trans-unit id="9fd59920b1e1f67f4620dd4d6ab7c5b3" resname="menu.contact">
+        <source>menu.contact</source>
+        <target>Contact</target>
+      </trans-unit>
+      <trans-unit id="a41ce6490272595520c7a2640528cc08" resname="sidebar.last_games">
+        <source>sidebar.last_games</source>
+        <target>Last Games</target>
+      </trans-unit>
+      <trans-unit id="f32428427dd73eff6dfaf3c98ac27590" resname="sidebar.last_players">
+        <source>sidebar.last_players</source>
+        <target>Last Players</target>
+      </trans-unit>
+    </body>
+  </file>
+</xliff>
