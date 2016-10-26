@@ -37,4 +37,14 @@ class ContactRequest
     public $subject;
     
     
+    public function createSwiftMessage($recipient) {
+        return \Swift_Message::newInstance()
+          ->setFrom($this->emailAddress, $this->fullName)
+          ->setTo($recipient)
+          ->setCc($this->emailAddress)
+          ->setReplyTo($this->emailAddress)
+          ->setSubject($this->subject)
+          ->setBody($this->message);
+    }
+    
 }

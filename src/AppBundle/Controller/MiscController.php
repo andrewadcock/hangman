@@ -25,15 +25,7 @@ class MiscController extends Controller
         
         if ($form->isSubmitted() && $form->isValid()) {
             
-            $message = \Swift_Message::newInstance()
-              ->setFrom($contact->emailAddress, $contact->fullName)
-              ->setTo('sysadmin@example.com')
-              ->setCc($contact->emailAddress)
-              ->setReplyTo($contact->emailAddress)
-              ->setSubject($contact->subject)
-              ->setBody($contact->message);
-            
-            $this->get('mailer')->send($message);
+            $this->get('mailer')->send($contact->createSwiftMessage($this->getParameter('sysadmin_email')));
             
             $this->addFlash('success', 'contact_request.success');
             
