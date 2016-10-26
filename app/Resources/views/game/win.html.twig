@@ -1,0 +1,17 @@
+{% extends 'layout.html.twig' %}
+
+{% trans_default_domain 'game' %}
+
+{% block title 'win.title'|trans %}
+
+{% block subtitle 'win.subtitle'|trans %}
+
+{% block content %}
+
+  <p>
+    {% trans with { '%word%': "<strong>#{game.word}</strong>" } %}
+    win.message
+    {% endtrans %}
+  </p>
+
+{% endblock %}
