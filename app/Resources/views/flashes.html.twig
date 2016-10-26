@@ -1,0 +1,9 @@
+{% if app.session.flashBag.has('success') %}
+  <div class="flash-success">
+    <ul>
+      {% for message in app.session.flashBag.get('success') %}
+        <li>{{ message|trans }}</li>
+      {% endfor %}
+    </ul>
+  </div>
+{% endif %}

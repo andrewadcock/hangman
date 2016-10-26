@@ -1,0 +1,23 @@
+{% extends 'layout.html.twig' %}
+
+{#{% form_theme form with ['form_table_layout.html.twig'] %}#}
+
+{% trans_default_domain 'misc' %}
+
+{% block title 'contact.title'|trans %}
+
+{% block subtitle 'contact.subtitle'|trans %}
+
+{% block content %}
+  {{ form_start(form) }}
+    {{ form_widget(form) }}
+
+    <div>
+      <button type="submit">
+        {{- 'contact.submit'|trans -}}
+      </button>
+    </div>
+
+  {{ form_end(form) }}
+{% endblock %}
+
