@@ -2,9 +2,6 @@
 
 namespace AppBundle\Controller;
 
-use AppBundle\Game\GameContext;
-use AppBundle\Game\GameRunner;
-use AppBundle\Game\WordList;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Method;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
@@ -25,7 +22,7 @@ class GameController extends Controller
     public function playAction()
     {
         
-        $game = $this->createGameRunner(true)->loadGame();
+        $game = $this->get('app.game_runner')->loadGame();
         
         return $this->render(
           'game/play.html.twig',
@@ -41,7 +38,7 @@ class GameController extends Controller
      */
     public function resetAction()
     {
-        $this->createGameRunner()->resetGame();
+        $$this->get('app.game_runner')->resetGame();
         
         return $this->redirectToRoute("app_game_play");
     }
@@ -58,7 +55,7 @@ class GameController extends Controller
      */
     public function tryLetterAction($letter)
     {
-        $game = $this->createGameRunner()->playLetter($letter);
+        $game = $this->get('app.game_runner')->playLetter($letter);
         
         if (!$game->isOver()) {
             return $this->redirectToRoute("app_game_play");
@@ -67,7 +64,6 @@ class GameController extends Controller
         return $this->redirectToRoute(
           $game->isWon() ? 'app_game_win' : 'app_game_fail'
         );
-        
     }
     
     /**
@@ -81,7 +77,7 @@ class GameController extends Controller
     public function tryWordAction(Request $request)
     {
         $game =
-          $this->createGameRunner()
+          $this->get('app.game_runner')
             ->playWord($request->request->get('word'));
         
         
@@ -96,7 +92,7 @@ class GameController extends Controller
      */
     public function failAction()
     {
-        $game = $this->createGameRunner()->resetGameOnFailure();
+        $game = $this->get('app.game_runner')->resetGameOnFailure();
         
         return $this->render(
           'game/fail.html.twig',
@@ -112,7 +108,7 @@ class GameController extends Controller
      */
     public function winAction()
     {
-        $game = $this->createGameRunner()->resetGameOnSuccess();
+        $game = $this->get('app.game_runner')->resetGameOnSuccess();
         
         return $this->render(
           'game/win.html.twig',
@@ -127,22 +123,4 @@ class GameController extends Controller
         
         return $this->render('game/sidebar.html.twig');
     }
-    
-    private function createGameRunner($withWordList = false)
-    {
-
-        $wordList = null;
-        if ($withWordList) {
-            $wordList = new WordList();
-            $wordList->addWord('computer');
-            $wordList->addWord('monitors');
-            $wordList->addWord('cellular');
-        }
-        
-        return new GameRunner(
-          new GameContext($this->get('session')), $wordList
-        );
-        
-    }
-    
 }

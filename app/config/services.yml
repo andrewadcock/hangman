@@ -4,6 +4,22 @@ parameters:
 #    parameter_name: value
 
 services:
-#    service_name:
-#        class: AppBundle\Directory\ClassName
-#        arguments: ["@another_service_name", "plain_value", "%parameter_name%"]
+
+    app.game_runner:
+        class: 'AppBundle\Game\GameRunner'
+        arguments: ['@app.game_context', '@?app.word_list']
+
+
+    app.word_list:
+        class: 'AppBundle\Game\WordList'
+        calls:
+            - [ 'addWord', [ 'computer' ] ]
+            - [ 'addWord', [ 'monitors' ] ]
+            - [ 'addWord', [ 'cellular' ] ]
+
+    app.game_context:
+        class: 'AppBundle\Game\GameContext'
+        arguments: ['@session']
+
+
+
