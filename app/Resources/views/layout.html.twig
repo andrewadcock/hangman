@@ -40,9 +40,9 @@
     <div id="content">
       {% include('flashes.html.twig') %}
       <h2>
-        {% block subtitle %}
-          {{  block('title') }}
-        {% endblock %}
+        {%- block subtitle -%}
+          {{-  block('title') -}}
+        {%- endblock -%}
       </h2>
       {% block content %}{% endblock %}
     </div>
