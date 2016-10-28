@@ -17,6 +17,18 @@
         <source>contact.submit</source>
         <target>__contact.submit</target>
       </trans-unit>
+      <trans-unit id="77a206252395f65c34547443b528deee" resname="signup.title">
+        <source>signup.title</source>
+        <target>__signup.title</target>
+      </trans-unit>
+      <trans-unit id="8d18eb01d6a42d630c2f7cbef70862d7" resname="signup.subtitle">
+        <source>signup.subtitle</source>
+        <target>__signup.subtitle</target>
+      </trans-unit>
+      <trans-unit id="950cffb5fd6d44f2a57d0d2df146058c" resname="signup.submit">
+        <source>signup.submit</source>
+        <target>__signup.submit</target>
+      </trans-unit>
     </body>
   </file>
 </xliff>

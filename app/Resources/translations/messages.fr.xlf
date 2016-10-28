@@ -29,6 +29,10 @@
         <source>sidebar.last_players</source>
         <target>Dernieres joueurs</target>
       </trans-unit>
+      <trans-unit id="797a9670e2732097498906b9e515da2d" resname="menu.logout">
+        <source>menu.logout</source>
+        <target>__menu.logout</target>
+      </trans-unit>
     </body>
   </file>
 </xliff>
