@@ -6,6 +6,9 @@ use Doctrine\ORM\Mapping as ORM;
 use Doctrine\ORM\Mapping\UniqueConstraint;
 use Ramsey\Uuid\Uuid;
 use Ramsey\Uuid\UuidInterface;
+use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
+use Symfony\Component\Validator\Constraints as Assert;
+use Symfony\Component\Validator\Context\ExecutionContextInterface;
 
 /**
  * @ORM\Entity(repositoryClass="AppBundle\Repository\UserAccountRepository")
@@ -14,6 +17,9 @@ use Ramsey\Uuid\UuidInterface;
  *  @UniqueConstraint(name="user_nickname_unique", columns="nickname"),
  *  @UniqueConstraint(name="user_email_address_unique", columns="email_address")
  * })
+ *
+ * @UniqueEntity("nickname", groups="Signup")
+ * @UniqueEntity("emailAddress")
  */
 class UserAccount
 {
@@ -31,26 +37,41 @@ class UserAccount
     
     /**
      * @ORM\Column(length=25)
+     * @Assert\NotBlank(groups="Signup")
+     * @Assert\Length(min=6, max=25, groups="Signup")
+     * @Assert\Regex("/^[a-z0-9]+$/i", groups="Signup")
      */
     private $nickname;
     
     /**
      * @ORM\Column
+     *
+     * @Assert\NotBlank(groups="Signup")
+     * @Assert\Length(min=8)
      */
     private $password;
     
     /**
      * @ORM\Column(length=50)
+     *
+     * @Assert\NotBlank()
+     * @Assert\Length(min=2, max=50)
      */
     private $fullName;
     
     /**
      * @ORM\Column(length=100)
+     *
+     * @Assert\NotBlank()
+     * @Assert\Email()
      */
     private $emailAddress;
     
     /**
      * @ORM\Column(type="date", nullable=true)
+     *
+     * @Assert\NotBlank(groups="Signup")
+     * @Assert\Range(max="-18 years", maxMessage="user_account.birthdate.must_be_adult")
      */
     private $birthdate;
     
@@ -71,9 +92,8 @@ class UserAccount
       $fullName,
       $emailAddress,
       $birthdate = null
-    )
-    {
-        if(null != $birthdate && !$birthdate instanceof \DateTime) {
+    ) {
+        if (null != $birthdate && !$birthdate instanceof \DateTime) {
             $birthdate = new \DateTime($birthdate);
         }
         
@@ -111,5 +131,53 @@ class UserAccount
         }
         
         return $this->uuid;
+    }
+    
+    
+    public function getId()
+    {
+        return $this->id;
+    }
+    
+    public function getNickname()
+    {
+        return $this->nickname;
+    }
+    
+    public function getPassword()
+    {
+        return $this->password;
+    }
+    
+    public function getFullName()
+    {
+        return $this->fullName;
+    }
+    
+    public function getEmailAddress()
+    {
+        return $this->emailAddress;
+    }
+    
+    public function getBirthdate()
+    {
+        return $this->birthdate;
+    }
+    
+    /**
+     * @Assert\Callback()
+     */
+    public static function checkPassword(
+      self $account,
+      ExecutionContextInterface $context
+    ) {
+        if (false !== stripos($account->password, $account->nickname)) {
+            $context
+              ->buildViolation('user_account.password.nickname_detected')
+              ->atPath('password')
+              ->setParameter('{{ nickname }}', $account->nickname)
+              ->setParameter('{{ password }}', $account->password)
+              ->addViolation();
+        }
     }
 }
