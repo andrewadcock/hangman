@@ -1,0 +1,5 @@
+{% block password_widget %}
+  {% set type='password' %}
+  {{ block('form_widget_simple') }}
+  <img src="{{ asset('images/lock.gif') }}" alt="lock" />
+{% endblock password_widget %}
