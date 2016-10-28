@@ -8,7 +8,7 @@ use Ramsey\Uuid\Uuid;
 use Ramsey\Uuid\UuidInterface;
 
 /**
- * @ORM\Entity()
+ * @ORM\Entity(repositoryClass="AppBundle\Repository\UserAccountRepository")
  * @ORM\Table(name="users", uniqueConstraints={
  *  @UniqueConstraint(name="user_uuid_unique", columns="uuid"),
  *  @UniqueConstraint(name="user_nickname_unique", columns="nickname"),

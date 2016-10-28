@@ -2,6 +2,7 @@
 
 namespace AppBundle\Controller;
 
+use AppBundle\Entity\UserAccount;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Method;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
@@ -20,15 +21,12 @@ class UserController extends Controller
     
     public function listMostRecentAction()
     {
-        $users = [
-          ['username' => 'Homer'],
-          ['username' => 'Marge'],
-          ['username' => 'Maggie'],
-          ['username' => 'Lisa'],
-          ['username' => 'Bart'],
-        ];
         
-        shuffle($users);
+        $users = $this
+          ->getDoctrine()
+          ->getRepository(UserAccount::class)
+          ->findMostRecentUsers()
+        ;
         
         return $this->render(
           '/user/sidebar.html.twig',
