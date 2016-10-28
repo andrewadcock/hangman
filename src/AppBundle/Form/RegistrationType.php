@@ -13,6 +13,7 @@ use Symfony\Component\Form\Extension\Core\Type\RepeatedType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\Form\FormInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
+use Symfony\Component\Security\Core\Encoder\EncoderFactoryInterface;
 use Symfony\Component\Validator\Constraint;
 
 class RegistrationType extends AbstractType
@@ -60,6 +61,8 @@ class RegistrationType extends AbstractType
           [
             'data_class' => UserAccount::class,
             'empty_data' => function (FormInterface $form) {
+               
+                
                 return UserAccount::signup(
                   $form->get('nickname')->getData(),
                   $form->get('password')->getData(),
@@ -72,6 +75,12 @@ class RegistrationType extends AbstractType
             'translation_domain' => "registration",
             'validation_groups' => ['Signup', Constraint::DEFAULT_GROUP],
           ]
+        );
+        
+        $resolver->setRequired('encoder_factory');
+        $resolver->setAllowedTypes(
+          'encoder_factory',
+          EncoderFactoryInterface::class
         );
     }
     

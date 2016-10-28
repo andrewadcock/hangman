@@ -4,6 +4,7 @@ namespace AppBundle\Controller;
 
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Method;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
+use Sensio\Bundle\FrameworkExtraBundle\Configuration\Security;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\HttpFoundation\Request;
 
@@ -18,6 +19,7 @@ class GameController extends Controller
     /**
      * @Route("", name="app_game_play")
      * @Method("GET")
+     * @Security("is_granted('ROLE_USER')")
      */
     public function playAction()
     {
@@ -35,10 +37,11 @@ class GameController extends Controller
     /**
      * @Route("/reset", name="app_game_reset")
      * @Method("GET")
+     * @Security("is_granted('ROLE_USER')")
      */
     public function resetAction()
     {
-        $$this->get('app.game_runner')->resetGame();
+        $this->get('app.game_runner')->resetGame();
         
         return $this->redirectToRoute("app_game_play");
     }
@@ -52,6 +55,7 @@ class GameController extends Controller
      *   }
      * )
      * @Method("GET")
+     * @Security("is_granted('ROLE_USER')")
      */
     public function tryLetterAction($letter)
     {
@@ -73,6 +77,7 @@ class GameController extends Controller
      *   condition="request.request.get('word') matches '/^[a-z]{2,}$/i'"
      * )
      * @Method("POST")
+     * @Security("is_granted('ROLE_USER')")
      */
     public function tryWordAction(Request $request)
     {
@@ -89,6 +94,7 @@ class GameController extends Controller
     /**
      * @Route("/fail", name="app_game_fail")
      * @Method("GET")
+     * @Security("is_granted('ROLE_USER')")
      */
     public function failAction()
     {
@@ -105,6 +111,7 @@ class GameController extends Controller
     /**
      * @Route("/win", name="app_game_win")
      * @Method("GET")
+     * @Security("is_granted('ROLE_USER')")
      */
     public function winAction()
     {
@@ -120,7 +127,6 @@ class GameController extends Controller
     
     public function listMostRecentAction()
     {
-        
         return $this->render('game/sidebar.html.twig');
     }
 }

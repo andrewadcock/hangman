@@ -8,9 +8,15 @@
 
 {% block content %}
 
+  {% if error %}
+    <div class="auth-error">
+      {{ error.messageKey|trans(error.messageData) }}
+    </div>
+  {% endif %}
+
   <form action="{{ path('app_login_check') }}" method="post">
     <label for="username">{{ 'login.username'|trans }}</label>
-    <input type="text" id="username" name="my_login" value="" />
+    <input type="text" id="username" name="my_login" value="{{ last_username }}" />
 
     <label for="password">{{ 'login.password'|trans }}</label>
     <input type="password" id="password" name="my_secret" />

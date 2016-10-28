@@ -14,16 +14,31 @@ class SecurityController extends Controller
      */
     public function loginAction()
     {
-        return $this->render('login.html.twig');
+        $utils = $this->get('security.authentication_utils');
+        
+        return $this->render(
+          'login.html.twig',
+          [
+            'last_username' => $utils->getLastUsername(),
+            'error' => $utils->getLastAuthenticationError(),
+          ]
+        );
     }
     
     /**
      * @Route("/login/check", name="app_login_check")
-     * @Method("GET")
+     * @Method("GET|POST")
      */
     public function loginCheckAction()
     {
-        return $this->render('login.html.twig');
+    }
+    
+    /**
+     * @Route("/logout", name="app_logout")
+     * @Method("GET")
+     */
+    public function logoutAction()
+    {
     }
     
     

@@ -17,10 +17,22 @@ class UserController extends Controller
      */
     public function signupAction(Request $request)
     {
-        $form = $this->createForm(RegistrationType::class);
+        $form = $this->createForm(
+          RegistrationType::class,
+          null,
+          [
+            'with_rules' => false,
+            'encoder_factory' => $this->get('security.encoder_factory'),
+          ]
+        );
         $form->handleRequest($request);
-    
+        
         if ($form->isSubmitted() && $form->isValid()) {
+            /** @var UserAccount $user */
+            $user = $form->getData();
+            $encoder = $this->get('security.password_encoder');
+            $user->changePassword($encoder->encodePassword($user, $user->getPassword()));
+            
             $em = $this->getDoctrine()->getManager();
             $em->persist($form->getData());
             $em->flush();
@@ -29,9 +41,12 @@ class UserController extends Controller
             return $this->redirectToRoute('app_login');
         }
         
-        return $this->render('/user/signup.html.twig', [
-          'form' => $form->createView(),
-        ]);
+        return $this->render(
+          '/user/signup.html.twig',
+          [
+            'form' => $form->createView(),
+          ]
+        );
     }
     
     
@@ -41,8 +56,7 @@ class UserController extends Controller
         $users = $this
           ->getDoctrine()
           ->getRepository(UserAccount::class)
-          ->findMostRecentUsers()
-        ;
+          ->findMostRecentUsers();
         
         return $this->render(
           '/user/sidebar.html.twig',

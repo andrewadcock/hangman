@@ -2,10 +2,22 @@
 # http://symfony.com/doc/current/book/security.html
 security:
 
-    # http://symfony.com/doc/current/book/security.html#where-do-users-come-from-user-providers
+    role_hierarchy:
+        ROLE_USER_VIP:  ROLE_USER
+        ROLE_ADMIN: [ROLE_USER_VIP, ROLE_ALLOWED_TO_SWITCH]
+
+    encoders:
+        AppBundle\Entity\UserAccount: bcrypt
+
     providers:
-        in_memory:
-            memory: ~
+        users:
+            chain:
+                providers: [users_by_nickname, users_by_email]
+        users_by_nickname:
+            entity: { class: 'AppBundle:UserAccount', property: nickname }
+        users_by_email:
+            entity: { class: 'AppBundle:UserAccount', property: emailAddress }
+
 
     firewalls:
         # disables authentication for assets and the profiler, adapt it according to your needs
@@ -13,12 +25,25 @@ security:
             pattern: ^/(_(profiler|wdt)|css|images|js)/
             security: false
 
+        admin:
+            pattern: ^/admin
+            provider: users
+            http_basic: ~
+
         main:
+            pattern: ^/
+            provider: users
             anonymous: ~
-            # activate different ways to authenticate
+            switch_user: ~
+            form_login:
+                login_path: app_login
+                check_path: app_login_check
+                default_target_path: app_game_play
+                always_use_default_target_path: true
+                username_parameter: my_login
+                password_parameter: my_secret
+            logout:
+                path: app_logout
+                target: app_login
 
-            # http_basic: ~
-            # http://symfony.com/doc/current/book/security.html#a-configuring-how-your-users-will-authenticate
 
-            # form_login: ~
-            # http://symfony.com/doc/current/cookbook/security/form_login_setup.html

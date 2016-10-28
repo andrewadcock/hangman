@@ -7,6 +7,7 @@ use Doctrine\ORM\Mapping\UniqueConstraint;
 use Ramsey\Uuid\Uuid;
 use Ramsey\Uuid\UuidInterface;
 use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
+use Symfony\Component\Security\Core\User\UserInterface;
 use Symfony\Component\Validator\Constraints as Assert;
 use Symfony\Component\Validator\Context\ExecutionContextInterface;
 
@@ -21,7 +22,7 @@ use Symfony\Component\Validator\Context\ExecutionContextInterface;
  * @UniqueEntity("nickname", groups="Signup")
  * @UniqueEntity("emailAddress")
  */
-class UserAccount
+class UserAccount implements UserInterface
 {
     /**
      * @ORM\Id()
@@ -133,6 +134,9 @@ class UserAccount
         return $this->uuid;
     }
     
+    public function changePassword($password) {
+        $this->password = $password;
+    }
     
     public function getId()
     {
@@ -179,5 +183,23 @@ class UserAccount
               ->setParameter('{{ password }}', $account->password)
               ->addViolation();
         }
+    }
+    
+    public function getRoles()
+    {
+        return (array) $this->permissions;
+    }
+    
+    public function getSalt()
+    {
+    }
+    
+    public function getUsername()
+    {
+        return $this->nickname;
+    }
+    
+    public function eraseCredentials()
+    {
     }
 }
