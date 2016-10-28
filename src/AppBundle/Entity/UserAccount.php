@@ -4,6 +4,8 @@ namespace AppBundle\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
 use Doctrine\ORM\Mapping\UniqueConstraint;
+use Ramsey\Uuid\Uuid;
+use Ramsey\Uuid\UuidInterface;
 
 /**
  * @ORM\Entity()
@@ -62,10 +64,52 @@ class UserAccount
      */
     private $registeredAt;
     
-    public function __construct()
+    public function __construct(
+      UuidInterface $uuid,
+      $nickname,
+      $password,
+      $fullName,
+      $emailAddress,
+      $birthdate = null
+    )
     {
+        if(null != $birthdate && !$birthdate instanceof \DateTime) {
+            $birthdate = new \DateTime($birthdate);
+        }
+        
         $this->registeredAt = new \DateTime();
         $this->permissions = ['ROLE_USER'];
+        $this->uuid = $uuid;
+        $this->nickname = $nickname;
+        $this->password = $password;
+        $this->fullName = $fullName;
+        $this->emailAddress = $emailAddress;
+        $this->birthdate = $birthdate;
     }
     
+    public static function signup(
+      $nickname,
+      $password,
+      $fullName,
+      $emailAddress,
+      $birthdate = null
+    ) {
+        return new static(
+          Uuid::uuid4(),
+          $nickname,
+          $password,
+          $fullName,
+          $emailAddress,
+          $birthdate
+        );
+    }
+    
+    public function getUuid()
+    {
+        if (!$this->uuid instanceof UuidInterface) {
+            $this->uuid = Uuid::fromString($this->uuid);
+        }
+        
+        return $this->uuid;
+    }
 }
